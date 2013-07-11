@@ -1,3 +1,5 @@
+# Init for devices built on Samsung SMDK4412 platform
+
 import /init.target.rc
 import /init.smdk4x12.usb.rc
 
