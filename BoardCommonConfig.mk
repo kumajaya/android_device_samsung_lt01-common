@@ -68,9 +68,6 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 12813598720
 BOARD_FLASH_BLOCK_SIZE := 4096
 TARGET_USERIMAGES_USE_EXT4 := true
 
-# Hardware tunables
-BOARD_HARDWARE_CLASS := hardware/samsung/cmhw
-
 # Graphics
 BOARD_EGL_CFG := device/samsung/lt01-common/configs/egl.cfg
 USE_OPENGL_RENDERER := true
