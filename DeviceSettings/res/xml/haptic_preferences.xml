@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
             android:title="@string/vibrator_title">
-        <com.cyanogenmod.settings.device.VibratorTuningPreference
+        <org.omnirom.omnigears.device.VibratorTuningPreference
             android:key="vibrator_tuning"
             android:title="@string/vibrator_tuning_title"
             android:dialogTitle="@string/vibrator_tuning_title" />

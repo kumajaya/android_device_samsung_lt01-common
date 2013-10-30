@@ -14,45 +14,47 @@
  * limitations under the License.
  */
 
-package com.cyanogenmod.settings.device;
+package org.omnirom.omnigears.device;
 
-import java.io.IOException;
 import android.content.Context;
-import android.util.AttributeSet;
+
 import android.content.SharedPreferences;
+import android.util.AttributeSet;
 import android.preference.Preference;
 import android.preference.ListPreference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-public class TouchkeyTimeout extends ListPreference implements OnPreferenceChangeListener {
+public class mDNIeMode extends ListPreference implements OnPreferenceChangeListener {
 
-    public TouchkeyTimeout(Context context, AttributeSet attrs) {
+    private static String FILE = null;
+
+    public mDNIeMode(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setOnPreferenceChangeListener(this);
+        FILE = context.getResources().getString(R.string.mdnie_mode_sysfs_file);
     }
 
-    private static final String FILE_TOUCHKEY_TIMEOUT = "/sys/class/sec/sec_touchkey/timeout";
-
-    public static boolean isSupported() {
-        return Utils.fileExists(FILE_TOUCHKEY_TIMEOUT);
+    public static boolean isSupported(String filePath) {
+        return Utils.fileExists(filePath);
     }
 
     /**
-     * Restore touchscreen sensitivity setting from SharedPreferences. (Write to kernel.)
+     * Restore mdnie user mode setting from SharedPreferences. (Write to kernel.)
      * @param context       The context to read the SharedPreferences from
      */
     public static void restore(Context context) {
-        if (!isSupported()) {
+        FILE = context.getResources().getString(R.string.mdnie_mode_sysfs_file);
+        if (!isSupported(FILE)) {
             return;
         }
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Utils.writeValue(FILE_TOUCHKEY_TIMEOUT, sharedPrefs.getString(DeviceSettings.KEY_TOUCHKEY_TIMEOUT, "3"));
+        Utils.writeValue(FILE, sharedPrefs.getString(DeviceSettings.KEY_MDNIE_MODE, "0"));
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        Utils.writeValue(FILE_TOUCHKEY_TIMEOUT, (String) newValue);
+        Utils.writeValue(FILE, (String) newValue);
         return true;
     }
 

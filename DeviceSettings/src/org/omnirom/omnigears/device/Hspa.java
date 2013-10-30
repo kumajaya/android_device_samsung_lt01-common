@@ -14,48 +14,54 @@
  * limitations under the License.
  */
 
-package com.cyanogenmod.settings.device;
+package org.omnirom.omnigears.device;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-public class SPenPowerSavingMode extends CheckBoxPreference implements OnPreferenceChangeListener {
+public class Hspa extends ListPreference implements OnPreferenceChangeListener {
 
-    private static String FILE_PATH = null;
+    private static final String FILE = "/system/app/SamsungServiceMode.apk";
+    private Context mCtx;
 
-    public SPenPowerSavingMode(Context context, AttributeSet attrs) {
+    public Hspa(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setOnPreferenceChangeListener(this);
-        FILE_PATH = context.getResources().getString(R.string.spen_powersaving_sysfs_file);
+        mCtx = context;
     }
 
-    public static boolean isSupported(String filePath) {
-        return Utils.fileExists(filePath);
+    public static boolean isSupported() {
+        return Utils.fileExists(FILE);
     }
 
     /**
-     * Restore s-pen setting from SharedPreferences. (Write to kernel.)
+     * Restore hspa setting from SharedPreferences. (Write to kernel.)
      * @param context       The context to read the SharedPreferences from
      */
     public static void restore(Context context) {
-        FILE_PATH = context.getResources().getString(R.string.spen_powersaving_sysfs_file);
-
-        if (!isSupported(FILE_PATH)) {
+        if (!isSupported()) {
             return;
         }
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Utils.writeValue(FILE_PATH, sharedPrefs.getBoolean(DeviceSettings.KEY_SPEN_POWER_SAVING_MODE, false) ? "1" : "0");
+        sendIntent(context, sharedPrefs.getString(DeviceSettings.KEY_HSPA, "23"));
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        Utils.writeValue(FILE_PATH, ((Boolean) newValue) ? "1" : "0");
+        sendIntent(mCtx, (String) newValue);
         return true;
+    }
+
+    private static void sendIntent(Context context, String value) {
+        Intent i = new Intent("com.cyanogenmod.SamsungServiceMode.EXECUTE");
+        i.putExtra("sub_type", 20); // HSPA Setting
+        i.putExtra("data", value);
+        context.sendBroadcast(i);
     }
 }

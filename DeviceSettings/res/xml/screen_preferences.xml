@@ -5,14 +5,14 @@
     <PreferenceCategory
             android:title="@string/screen_colors_title">
         <!-- CABC -->
-        <com.cyanogenmod.settings.device.CABC
+        <org.omnirom.omnigears.device.CABC
                 android:key="cabc"
                 android:title="@string/cabc_title_head"
                 android:summary="@string/cabc_summary_head"
                 android:defaultValue="true" />
 
         <!-- mDNIe Scenario modes -->
-        <com.cyanogenmod.settings.device.mDNIeScenario
+        <org.omnirom.omnigears.device.mDNIeScenario
                 android:key="mdnie_scenario"
                 android:title="@string/mdnie_scenario_title_head"
                 android:summary="@string/mdnie_scenario_summary_head"
@@ -21,7 +21,7 @@
                 android:defaultValue="0" />
 
         <!-- mDNIe Mode -->
-        <com.cyanogenmod.settings.device.mDNIeMode
+        <org.omnirom.omnigears.device.mDNIeMode
                 android:key="mdnie_mode"
                 android:title="@string/mdnie_mode_title_head"
                 android:summary="@string/mdnie_mode_summary_head"
@@ -30,7 +30,7 @@
                 android:defaultValue="0" />
 
         <!-- mDNIe Negative mode -->
-        <com.cyanogenmod.settings.device.mDNIeNegative
+        <org.omnirom.omnigears.device.mDNIeNegative
                 android:key="mdnie_negative"
                 android:title="@string/mdnie_negative_title_head"
                 android:summary="@string/mdnie_negative_summary_head"
@@ -43,7 +43,7 @@
     <PreferenceCategory
             android:title="@string/led_subcat_title">
         <!-- LED fading mode -->
-        <com.cyanogenmod.settings.device.LedFade
+        <org.omnirom.omnigears.device.LedFade
                 android:key="led_fade"
                 android:title="@string/led_fade_title_head"
                 android:summary="@string/led_fade_summary_head"
@@ -57,7 +57,7 @@
             android:key="category_spen"
             android:title="@string/spen_subcat_title">
         <!-- S-Pen power saving mode -->
-        <com.cyanogenmod.settings.device.SPenPowerSavingMode
+        <org.omnirom.omnigears.device.SPenPowerSavingMode
                 android:key="spen_power_save"
                 android:title="@string/spen_power_save_title_head"
                 android:summary="@string/spen_power_save_summary_head" />
@@ -73,7 +73,7 @@
                 android:summaryOff="@string/touchkey_light_summary_off"
                 android:summaryOn="@string/touchkey_light_summary_on"
                 android:defaultValue="true" />
-        <com.cyanogenmod.settings.device.TouchkeyTimeout
+        <org.omnirom.omnigears.device.TouchkeyTimeout
                 android:key="touchkey_timeout"
                 android:title="@string/touchkey_timeout_title_head"
                 android:summary="@string/touchkey_timeout_summary_head"
