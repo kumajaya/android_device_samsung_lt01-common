@@ -53,7 +53,7 @@ int exynos_v4l2_output_start(struct exynos_camera *exynos_camera,
 	if (exynos_camera == NULL || output == NULL)
 		return -EINVAL;
 
-//	ALOGD("%s()", __func__);
+	ALOGD("%s()", __func__);
 
 	if (output->enabled) {
 		ALOGE("Output was already started");
@@ -113,6 +113,13 @@ int exynos_v4l2_output_start(struct exynos_camera *exynos_camera,
 	}
 
 	memory_size = value * 1024;
+	
+	value = 0;
+	rc = exynos_v4l2_g_ctrl(exynos_camera, v4l2_id, V4L2_CID_FIMC_VERSION, &value);
+	if (rc < 0) {
+		ALOGE("%s: Unable to get fimc version", __func__);
+		goto error;
+	}
 
 	rc = exynos_v4l2_s_ctrl(exynos_camera, v4l2_id, V4L2_CID_OVLY_MODE, FIMC_OVLY_NONE_MULTI_BUF);
 	if (rc < 0) {

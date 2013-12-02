@@ -25,8 +25,6 @@
 #include <linux/videodev2_exynos_media.h>
 #include <linux/fimc.h>
 
-#include <linux/s5c73m3.h>
-
 #ifdef EXYNOS_JPEG_HW
 #include <jpeg_hal.h>
 #endif
@@ -40,10 +38,13 @@
 
 #define EXYNOS_CAMERA_MAX_V4L2_NODES_COUNT	4
 
-#define EXYNOS_CAMERA_CAPTURE_BUFFERS_COUNT	6
-#define EXYNOS_CAMERA_PREVIEW_BUFFERS_COUNT	6
+#define EXYNOS_CAMERA_CAPTURE_BUFFERS_COUNT	1
+#define EXYNOS_CAMERA_PREVIEW_BUFFERS_COUNT	8
 #define EXYNOS_CAMERA_RECORDING_BUFFERS_COUNT	6
 #define EXYNOS_CAMERA_GRALLOC_BUFFERS_COUNT	3
+
+#define EXYNOS_CAMERA_UNKNOWN_CAPTURE_MODE 167774080
+#define ISX012_AUTO_FOCUS_IN_PROGRESS 0x8
 
 #define EXYNOS_CAMERA_PICTURE_OUTPUT_FORMAT	V4L2_PIX_FMT_YUYV
 
@@ -150,12 +151,6 @@ struct exynos_camera_params {
 	int zoom;
 	int max_zoom;
 
-	int auto_exposure_lock_supported;
-	int auto_exposure_lock;
-
-	int auto_white_balance_lock_supported;
-	int auto_white_balance_lock;
-
 	char *flash_mode;
 	char *flash_mode_values;
 
@@ -178,9 +173,6 @@ struct exynos_camera_params {
 
 	char *iso;
 	char *iso_values;
-
-	char *image_stabilization; // Anti-shake
-	char *image_stabilization_values;
 };
 
 struct exynos_camera_preset {
@@ -418,8 +410,6 @@ struct exynos_camera {
 	int focus_x;
 	int focus_y;
 	int zoom;
-	int ae_lock;
-	int awb_lock;
 	int flash_mode;
 	int exposure_compensation;
 	int whitebalance;
@@ -428,10 +418,6 @@ struct exynos_camera {
 	int effect;
 	int iso;
 	int metering;
-	int image_stabilization;
-	char raw_focus_areas[PAGE_SIZE];
-	char raw_focus_mode[64];
-	char raw_flash_mode[64];
 };
 
 struct exynos_camera_addrs {
@@ -470,7 +456,7 @@ int exynos_camera_params_apply(struct exynos_camera *exynos_camera, int force);
 int exynos_camera_capture(struct exynos_camera *exynos_camera);
 int exynos_camera_capture_thread_start(struct exynos_camera *exynos_camera);
 void exynos_camera_capture_thread_stop(struct exynos_camera *exynos_camera);
-int exynos_camera_capture_start(struct exynos_camera *exynos_camera);
+int exynos_camera_capture_start(struct exynos_camera *exynos_camera, int is_capture);
 void exynos_camera_capture_stop(struct exynos_camera *exynos_camera);
 int exynos_camera_capture_setup(struct exynos_camera *exynos_camera);
 struct exynos_camera_capture_listener *exynos_camera_capture_listener_register(
