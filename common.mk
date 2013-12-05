@@ -77,10 +77,10 @@ PRODUCT_PACKAGES := \
     libnetcmdiface \
     libsecion \
     libsync \
-#   lights.exynos4 \
     macloader \
     tinymix \
     tinyplay
+#   lights.exynos4
 
 # MFC API
 PRODUCT_PACKAGES += \
