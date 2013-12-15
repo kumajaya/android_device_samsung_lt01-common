@@ -14,54 +14,48 @@
  * limitations under the License.
  */
 
-package org.omnirom.omnigears.device;
+package org.omnirom.device;
 
 import android.content.Context;
-import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.ListPreference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-public class Hspa extends ListPreference implements OnPreferenceChangeListener {
+public class mDNIeScenario extends ListPreference implements OnPreferenceChangeListener {
 
-    private static final String FILE = "/system/app/SamsungServiceMode.apk";
-    private Context mCtx;
+    private static String FILE = null;
 
-    public Hspa(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public mDNIeScenario(Context context, AttributeSet attrs) {
+        super(context,attrs);
         this.setOnPreferenceChangeListener(this);
-        mCtx = context;
+        FILE = context.getResources().getString(R.string.mdnie_scenario_sysfs_file);
     }
 
-    public static boolean isSupported() {
-        return Utils.fileExists(FILE);
+    public static boolean isSupported(String filePath) {
+        return Utils.fileExists(filePath);
     }
 
     /**
-     * Restore hspa setting from SharedPreferences. (Write to kernel.)
+     * Restore mdnie "camera" setting from SharedPreferences. (Write to kernel.)
      * @param context       The context to read the SharedPreferences from
      */
     public static void restore(Context context) {
-        if (!isSupported()) {
+        FILE = context.getResources().getString(R.string.mdnie_scenario_sysfs_file);
+        if (!isSupported(FILE)) {
             return;
         }
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sendIntent(context, sharedPrefs.getString(DeviceSettings.KEY_HSPA, "23"));
+        Utils.writeValue(FILE, sharedPrefs.getString(DeviceSettings.KEY_MDNIE_SCENARIO, "0"));
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        sendIntent(mCtx, (String) newValue);
+        Utils.writeValue(FILE, (String) newValue);
         return true;
     }
 
-    private static void sendIntent(Context context, String value) {
-        Intent i = new Intent("com.cyanogenmod.SamsungServiceMode.EXECUTE");
-        i.putExtra("sub_type", 20); // HSPA Setting
-        i.putExtra("data", value);
-        context.sendBroadcast(i);
-    }
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.omnirom.omnigears.device;
+package org.omnirom.device;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,7 +31,7 @@ public class Startup extends BroadcastReceiver {
         LedFade.restore(context);
         mDNIeScenario.restore(context);
         mDNIeMode.restore(context);
-        mDNIeNegative.restore(context);
+        // mDNIeNegative.restore(context);
         RadioFragmentActivity.restore(context);
         ScreenFragmentActivity.restore(context);
         SPenPowerSavingMode.restore(context);

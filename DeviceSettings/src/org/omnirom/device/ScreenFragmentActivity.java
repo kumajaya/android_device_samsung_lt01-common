@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.omnirom.omnigears.device;
+package org.omnirom.device;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -30,7 +30,7 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 
-import org.omnirom.omnigears.device.R;
+import org.omnirom.device.R;
 
 public class ScreenFragmentActivity extends PreferenceFragment {
 
@@ -39,7 +39,7 @@ public class ScreenFragmentActivity extends PreferenceFragment {
     private CABC mCABC;
     private mDNIeScenario mmDNIeScenario;
     private mDNIeMode mmDNIeMode;
-    private mDNIeNegative mmDNIeNegative;
+    // private mDNIeNegative mmDNIeNegative;
     private LedFade mLedFade;
     private CheckBoxPreference mTouchKey;
     private TouchkeyTimeout mTouchKeyTimeout;
@@ -69,8 +69,8 @@ public class ScreenFragmentActivity extends PreferenceFragment {
         mmDNIeMode = (mDNIeMode) findPreference(DeviceSettings.KEY_MDNIE_MODE);
         mmDNIeMode.setEnabled(mDNIeMode.isSupported(res.getString(R.string.mdnie_mode_sysfs_file)));
 
-        mmDNIeNegative = (mDNIeNegative) findPreference(DeviceSettings.KEY_MDNIE_NEGATIVE);
-        mmDNIeNegative.setEnabled(mDNIeNegative.isSupported(res.getString(R.string.mdnie_negative_sysfs_file)));
+        // mmDNIeNegative = (mDNIeNegative) findPreference(DeviceSettings.KEY_MDNIE_NEGATIVE);
+        // mmDNIeNegative.setEnabled(mDNIeNegative.isSupported(res.getString(R.string.mdnie_negative_sysfs_file)));
 
         /* LED */
         mLedFade = (LedFade) findPreference(DeviceSettings.KEY_LED_FADE);

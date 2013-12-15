@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.omnirom.omnigears.device;
+package org.omnirom.device;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -28,14 +28,14 @@ import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
-import org.omnirom.omnigears.device.R;
+import org.omnirom.device.R;
 
 import java.util.ArrayList;
 
 public class DeviceSettings extends FragmentActivity {
 
-    public static final String SHARED_PREFERENCES_BASENAME = "com.cyanogenmod.settings.device";
-    public static final String ACTION_UPDATE_PREFERENCES = "com.cyanogenmod.settings.device.UPDATE";
+    public static final String SHARED_PREFERENCES_BASENAME = "com.omnirom.settings.device";
+    public static final String ACTION_UPDATE_PREFERENCES = "com.omnirom.settings.device.UPDATE";
     public static final String KEY_CABC = "cabc";
     public static final String KEY_MDNIE_SCENARIO = "mdnie_scenario";
     public static final String KEY_MDNIE_MODE = "mdnie_mode";

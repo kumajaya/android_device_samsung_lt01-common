@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package org.omnirom.omnigears.device;
+package org.omnirom.device;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -28,43 +29,38 @@ import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 
-import org.omnirom.omnigears.device.R;
+import org.omnirom.device.R;
 
-public class HapticFragmentActivity extends PreferenceFragment {
+public class RadioFragmentActivity extends PreferenceFragment {
 
-    private static final String TAG = "DeviceSettings_Haptic";
-    public static final String KEY_VIBRATOR_TUNING = "vibrator_tuning";
+    private static final String PREF_ENABLED = "1";
+    private static final String TAG = "DeviceSettings_Radio";
 
-    private static boolean sVibratorTuning;
-    private static boolean mEnableVibratorTuning = false;
-    private VibratorTuningPreference mVibratorTuning;
+    private static boolean sHspa;
+    private Hspa mHspa;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        addPreferencesFromResource(R.xml.radio_preferences);
+
+        PreferenceScreen prefSet = getPreferenceScreen();
         Resources res = getResources();
-        sVibratorTuning = res.getBoolean(R.bool.has_vibrator_tuning);
+        sHspa = res.getBoolean(R.bool.has_hspa);
 
-        addPreferencesFromResource(R.xml.haptic_preferences);
-
-        mVibratorTuning = (VibratorTuningPreference) findPreference(KEY_VIBRATOR_TUNING);
-
-        if (sVibratorTuning) {
-            String vibratorFilePath = res.getString(R.string.vibrator_sysfs_file);
-            if(VibratorTuningPreference.isSupported(vibratorFilePath)){
-                  mEnableVibratorTuning = true;
-            }
-        }
-
-        mVibratorTuning.setEnabled(mEnableVibratorTuning);
+        mHspa = (Hspa) findPreference(DeviceSettings.KEY_HSPA);
+        mHspa.setEnabled(sHspa);
     }
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+
         String boxValue;
         String key = preference.getKey();
+
         Log.w(TAG, "key: " + key);
+
         return true;
     }
 

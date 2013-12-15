@@ -14,48 +14,46 @@
  * limitations under the License.
  */
 
-package org.omnirom.omnigears.device;
+package org.omnirom.device;
 
+import java.io.IOException;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.AttributeSet;
-import android.preference.CheckBoxPreference;
+import android.content.SharedPreferences;
 import android.preference.Preference;
+import android.preference.ListPreference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
-public class SPenPowerSavingMode extends CheckBoxPreference implements OnPreferenceChangeListener {
+public class LedFade extends ListPreference implements OnPreferenceChangeListener {
 
-    private static String FILE_PATH = null;
-
-    public SPenPowerSavingMode(Context context, AttributeSet attrs) {
+    public LedFade(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setOnPreferenceChangeListener(this);
-        FILE_PATH = context.getResources().getString(R.string.spen_powersaving_sysfs_file);
     }
 
-    public static boolean isSupported(String filePath) {
-        return Utils.fileExists(filePath);
+    private static final String FILE = "/sys/class/sec/led/led_fade";
+
+    public static boolean isSupported() {
+        return Utils.fileExists(FILE);
     }
 
     /**
-     * Restore s-pen setting from SharedPreferences. (Write to kernel.)
+     * Restore led fading mode setting from SharedPreferences. (Write to kernel.)
      * @param context       The context to read the SharedPreferences from
      */
     public static void restore(Context context) {
-        FILE_PATH = context.getResources().getString(R.string.spen_powersaving_sysfs_file);
-
-        if (!isSupported(FILE_PATH)) {
+        if (!isSupported()) {
             return;
         }
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        Utils.writeValue(FILE_PATH, sharedPrefs.getBoolean(DeviceSettings.KEY_SPEN_POWER_SAVING_MODE, false) ? "1" : "0");
+        Utils.writeValue(FILE, sharedPrefs.getString(DeviceSettings.KEY_LED_FADE, "1"));
     }
 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        Utils.writeValue(FILE_PATH, ((Boolean) newValue) ? "1" : "0");
+        Utils.writeValue(FILE, (String) newValue);
         return true;
     }
+
 }
