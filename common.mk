@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 The CyanogenMod Project
+# Copyright (C) 2013 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,10 +47,6 @@ PRODUCT_COPY_FILES += \
 # Netflix hack
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/98netflix:system/etc/init.d/98netflix
-
-# Bluetooth configuration files
-PRODUCT_COPY_FILES += \
-    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf
 
 # Wifi
 PRODUCT_COPY_FILES += \
@@ -150,7 +146,9 @@ PRODUCT_COPY_FILES += \
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
+    ro.zygote.disable_gl_preload=1 \
     ro.opengles.version=131072 \
+    ro.bq.gpu_to_cpu_unsupported=1 \
     debug.hwui.render_dirty_regions=false
 
 PRODUCT_TAGS += dalvik.gc.type-precise

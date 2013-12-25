@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 The CyanogenMod Project
+# Copyright (C) 2013 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -75,7 +75,8 @@ BOARD_HARDWARE_CLASS := hardware/samsung/cmhw
 BOARD_EGL_CFG := device/samsung/lt01-common/configs/egl.cfg
 USE_OPENGL_RENDERER := true
 BOARD_USES_SKIAHWJPEG := true
-COMMON_GLOBAL_CFLAGS += -DSEC_HWJPEG_G2D -DFORCE_SCREENSHOT_CPU_PATH
+COMMON_GLOBAL_CFLAGS += -DSEC_HWJPEG_G2D -DFORCE_SCREENSHOT_CPU_PATH -DWORKAROUND_BUG_10194508
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := true
 
 # FIMG Acceleration
 BOARD_USES_FIMGAPI := true
