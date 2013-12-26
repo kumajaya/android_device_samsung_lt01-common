@@ -1,8 +1,9 @@
-import init.target.rc
-import init.smdk4x12.usb.rc
+import /init.target.rc
+import /init.smdk4x12.usb.rc
 
 on init
     chmod 0701 /mnt/media_rw
+    chown root root /mnt/media_rw
     mkdir /mnt/shell/emulated 0700 shell shell
     mkdir /storage 0550 system sdcard_r
     mkdir /storage/emulated 0555 root root
@@ -37,6 +38,10 @@ on fs
 
     chown radio system /efs
     chmod 0771 /efs
+
+# exfat module
+    insmod /system/lib/modules/exfat_core.ko
+    insmod /system/lib/modules/exfat_fs.ko
 
 on post-fs-data
      # we will remap this as /mnt/sdcard with the sdcard fuse tool
@@ -239,7 +244,7 @@ on post-fs-data
 
 # Permissions for gpio_keys
     chown radio system /sys/class/sec/sec_key/wakeup_keys
-    write /sys/class/sec/sec_key/wakeup_keys 116,172,544
+    write /sys/class/sec/sec_key/wakeup_keys 116,172
 
 # Switch Device
     chown system system /sys/class/sec/switch/uart_sel
@@ -523,11 +528,4 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
 
 service macloader /system/bin/macloader
     class main
-    oneshot
-
-# Workaround for broken incall audio
-service bootsnd /system/bin/tinyplay /system/etc/sound/silence.wav -D 0 -d 0 -p 880
-    class late_start
-    user root
-    group audio
     oneshot

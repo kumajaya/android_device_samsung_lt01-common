@@ -37,8 +37,7 @@ PRODUCT_COPY_FILES := \
 # Audio
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/configs/audio_effects.conf:system/etc/audio_effects.conf \
-    $(COMMON_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf \
-    $(COMMON_PATH)/audio/silence.wav:system/etc/sound/silence.wav
+    $(COMMON_PATH)/configs/audio_policy.conf:system/etc/audio_policy.conf
 
 # Camera FW
 PRODUCT_COPY_FILES += \
@@ -62,7 +61,6 @@ PRODUCT_COPY_FILES += \
 
 # Packages
 PRODUCT_PACKAGES := \
-    AdvancedDisplay \
     audio.a2dp.default \
     audio.primary.smdk4x12 \
     audio.usb.default \
