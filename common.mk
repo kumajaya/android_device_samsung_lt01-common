@@ -74,7 +74,6 @@ PRODUCT_PACKAGES := \
     macloader \
     tinymix \
     tinyplay \
-    memtrack.exynos4 \
     SamsungServiceMode \
     DeviceSettings
 #   lights.exynos4
