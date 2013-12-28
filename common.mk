@@ -75,8 +75,7 @@ PRODUCT_PACKAGES := \
     libsync \
     macloader \
     tinymix \
-    tinyplay \
-    memtrack.exynos4
+    tinyplay
 #   lights.exynos4
 
 # MFC API
