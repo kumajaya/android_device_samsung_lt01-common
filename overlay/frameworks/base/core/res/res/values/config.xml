@@ -24,7 +24,9 @@
     <!-- Our amoled doesn't animate well. -->
     <bool name="config_animateScreenLights">false</bool>
 
+    <add-resource type="integer" name="config_deskDockKeepsScreenOn"></add-resource>
     <integer name="config_deskDockKeepsScreenOn">0</integer>
+    <add-resource type="integer" name="config_carDockKeepsScreenOn"></add-resource>
     <integer name="config_carDockKeepsScreenOn">1</integer>
 
     <!-- If this is true, the screen will come on when you unplug usb/power/whatever. -->
