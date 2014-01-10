@@ -246,7 +246,7 @@ on post-fs-data
 
 # Permissions for gpio_keys
     chown radio system /sys/class/sec/sec_key/wakeup_keys
-    write /sys/class/sec/sec_key/wakeup_keys 116,172
+    write /sys/class/sec/sec_key/wakeup_keys 116,172,544
 
 # Switch Device
     chown system system /sys/class/sec/switch/uart_sel
@@ -479,7 +479,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
     #   user wifi
     #   group wifi inet keystore
     class main
-    socket wpa_wlan0 dgram 660 wifi wifi
+    socket wpa_wlan0 dgram 660 wifi wifi u:object_r:wpa_socket:s0
     disabled
     oneshot
 
@@ -494,7 +494,7 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     #   user wifi
     #   group wifi inet keystore
     class main
-    socket wpa_wlan0 dgram 660 wifi wifi
+    socket wpa_wlan0 dgram 660 wifi wifi u:object_r:wpa_socket:s0
     disabled
     oneshot
 
@@ -530,4 +530,11 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
 
 service macloader /system/bin/macloader
     class main
+    oneshot
+
+# Workaround for broken incall audio
+service bootsnd /system/bin/tinyplay /system/etc/sound/silence.wav -D 0 -d 0 -p 880
+    class late_start
+    user root
+    group audio
     oneshot

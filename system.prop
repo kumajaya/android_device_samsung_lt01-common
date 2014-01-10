@@ -1,6 +1,0 @@
-#
-# system.prop for smdk4x12
-#
-
-ro.sf.lcd_density=213
-ro.lcd_min_brightness=20
