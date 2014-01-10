@@ -73,4 +73,4 @@ $(call inherit-product, frameworks/native/build/tablet-7in-xhdpi-2048-dalvik-hea
 # Include non-opensource parts
 $(call inherit-product, vendor/samsung/lt01-common/common-vendor.mk)
 
-$(call inherit-product, device/samsung/smdk4412-common/common.mk)
+$(call inherit-product, device/samsung/lt01-common/smdk4412-common.mk)
