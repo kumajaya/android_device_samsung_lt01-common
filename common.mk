@@ -30,6 +30,9 @@ PRODUCT_AAPT_PREF_CONFIG := tvdpi
 TARGET_SCREEN_HEIGHT := 1280
 TARGET_SCREEN_WIDTH := 800
 
+# No flashlight, no Torch app
+TARGET_HAS_CAM_FLASH := false
+
 # Init files
 PRODUCT_COPY_FILES := \
     $(COMMON_PATH)/rootdir/init.smdk4x12.rc:root/init.smdk4x12.rc \
