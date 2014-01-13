@@ -41,9 +41,6 @@ COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
 # Button backlight
 BOARD_EXYNOS4X12_TABLET_HAS_LED_BUTTONS := true
 
-# No flashlight, no Torch app
-TARGET_HAS_CAM_FLASH := false
-
 # inherit from the proprietary version
 -include vendor/samsung/lt01-common/BoardConfigVendor.mk
 
