@@ -677,4 +677,5 @@ int exynos_v4l2_output(struct exynos_camera *exynos_camera,
 int exynos_v4l2_output_release(struct exynos_camera *exynos_camera,
 	struct exynos_v4l2_output *output);
 
+int real_cam_id;
 #endif

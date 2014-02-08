@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2013 Paul Kocialkowski
- * Modified for N5110: Scott Brissenden
+ * Modified for Note 8.0: Scott Brissenden
  *
  * Based on crespo libcamera and exynos4 hal libcamera:
  * Copyright 2008, The Android Open Source Project
@@ -146,8 +146,8 @@ struct exynos_camera_preset exynos_camera_presets_smdk4x12[] = {
 			.preview_size = "640x480",
 			.preview_format_values = "yuv420sp,yuv420p",
 			.preview_format = "yuv420sp",
-			.preview_frame_rate_values = "30,20,15,8",
-			.preview_frame_rate = 30,
+			.preview_frame_rate_values = "25,15",
+			.preview_frame_rate = 25,
 			.preview_fps_range_values = "(15000,30000)",
 			.preview_fps_range = "15000,30000",
 
@@ -894,14 +894,12 @@ int exynos_camera_params_apply(struct exynos_camera *exynos_camera, int force)
 		}
 	}
 	
-	if(!exynos_camera->camera_fimc_is){
 		rc = exynos_v4l2_s_ctrl(exynos_camera, 0, V4L2_CID_CAMERA_AE_LOCK_UNLOCK, AE_UNLOCK);
 		if (rc < 0)
 			 ALOGE("%s: Unable to set antibanding", __func__);
 		rc = exynos_v4l2_s_ctrl(exynos_camera, 0, V4L2_CID_CAMERA_AWB_LOCK_UNLOCK, AWB_UNLOCK);
 		if (rc < 0)
 			  ALOGE("%s: Unable to set antibanding", __func__);
-	}	
 
 	// WB
 
@@ -1083,11 +1081,15 @@ int exynos_camera_capture(struct exynos_camera *exynos_camera)
 
 	// V4L2
 	
-	//ALOGE("%s : ",__func__);	
+	//ALOGE("%s : ",__func__);
 
 	index = exynos_v4l2_dqbuf_cap(exynos_camera, 0);
 	if (index < 0 || index >= buffers_count) {
 		rc = exynos_v4l2_poll(exynos_camera, 0);
+		if (rc == 0) {
+		        usleep(100);
+			rc = exynos_v4l2_poll(exynos_camera, 0);
+		}
 		if (rc < 0) {
 			ALOGE("%s Unable to poll", __func__);
 			goto error;
@@ -1121,7 +1123,6 @@ int exynos_camera_capture(struct exynos_camera *exynos_camera)
 	value = exynos_v4l2_s_ctrl(exynos_camera, 0, V4L2_CID_PADDR_CBCR, 0);
 
 	// Buffers
-
 	switch (format) {
 		case V4L2_PIX_FMT_JPEG:
 			jpeg_size = jpeg_offset = 0;
@@ -1188,7 +1189,6 @@ int exynos_camera_capture(struct exynos_camera *exynos_camera)
 	}
 
 	// Listeners
-
 	list = (struct list_head *) exynos_camera->capture_listeners;
 	while (list != NULL)  {
 		listener = (struct exynos_camera_capture_listener *) list;
@@ -1264,7 +1264,7 @@ void *exynos_camera_capture_thread(void *data)
 
 		while (exynos_camera->capture_enabled) {
 			pthread_mutex_lock(&exynos_camera->capture_mutex);
-
+			//usleep(10);
 			if (!exynos_camera->capture_enabled) {
 				pthread_mutex_unlock(&exynos_camera->capture_mutex);
 				break;
@@ -1794,7 +1794,7 @@ int exynos_camera_preview_output_start(struct exynos_camera *exynos_camera)
 	if (exynos_camera == NULL)
 		return -EINVAL;
 
-	ALOGD("%s()", __func__);
+	//ALOGD("%s()", __func__);
 
 	if (exynos_camera->preview_output_enabled) {
 		ALOGE("Preview was already started!");
@@ -1880,8 +1880,9 @@ int exynos_camera_preview_callback(struct exynos_camera *exynos_camera,
 	format = exynos_camera->preview_format;
 
 	for (i = 0; i < buffers_count; i++) {
-		if (buffers->format == V4L2_PIX_FMT_JPEG)
+		if (buffers->format == V4L2_PIX_FMT_JPEG){
 			goto buffers_continue;
+		}
 
 		// Optimal buffer
 		if (buffers->width == width && buffers->height == height) {
@@ -1917,7 +1918,7 @@ buffers_continue:
 				ALOGE("%s: Unable to start preview", __func__);
 				goto error;
 			}
-		} else if (exynos_camera->preview_buffer.width != buffer_width || exynos_camera->preview_buffer.height != buffer_height || exynos_camera->preview_buffer.format != buffer_format) {
+		} else if (exynos_camera->preview_buffer.width != buffer_width || exynos_camera->preview_buffer.height != buffer_height || exynos_camera->preview_buffer.format != buffer_format){
 			exynos_camera_preview_output_stop(exynos_camera);
 
 			memcpy(&exynos_camera->preview_buffer, buffer, sizeof(struct exynos_camera_buffer));
@@ -2062,6 +2063,8 @@ void *exynos_camera_preview_thread(void *data)
 		}
 
 		if (exynos_camera->preview_listener->busy) {
+		        // Prevent preview restart race conditions
+			usleep((useconds_t)25 * 1000);
 			rc = exynos_camera_preview(exynos_camera);
 			if (rc < 0) {
 				ALOGE("%s: Unable to preview", __func__);
@@ -2684,7 +2687,7 @@ void *exynos_camera_picture_thread(void *data)
 		pthread_mutex_unlock(&exynos_camera->picture_mutex);
 
 		if (exynos_camera->picture_completed) {
-		        ALOGE("%s: exynos_camera->picture_completed", __func__);
+		    ALOGE("%s: exynos_camera->picture_completed", __func__);
 			exynos_camera->picture_thread_running = 0;
 			exynos_camera_picture_thread_stop(exynos_camera);
 			break;
@@ -2707,7 +2710,7 @@ int exynos_camera_picture_thread_start(struct exynos_camera *exynos_camera)
 	if (exynos_camera == NULL)
 		return -EINVAL;
 
-	ALOGD("%s()", __func__);
+	//ALOGD("%s()", __func__);
 
 	if (exynos_camera->picture_thread_enabled) {
 		ALOGE("Picture thread was already started!");
@@ -2718,14 +2721,12 @@ int exynos_camera_picture_thread_start(struct exynos_camera *exynos_camera)
 		format = exynos_camera->camera_picture_format;
 	else
 		format = exynos_camera->picture_format;
-	
-	pthread_mutex_init(&exynos_camera->picture_mutex, NULL);
 
+	pthread_mutex_init(&exynos_camera->picture_mutex, NULL);
 	pthread_mutex_init(&exynos_camera->picture_lock_mutex, NULL);
 
 	// Initial lock
 	pthread_mutex_lock(&exynos_camera->picture_lock_mutex);
-
 	pthread_attr_init(&thread_attr);
 	pthread_attr_setdetachstate(&thread_attr, PTHREAD_CREATE_DETACHED);
 
@@ -2737,7 +2738,8 @@ int exynos_camera_picture_thread_start(struct exynos_camera *exynos_camera)
 		goto error;
 	}
 
-	format = exynos_camera->picture_format;
+	//format = exynos_camera->picture_format;
+	exynos_camera->picture_completed = 0;
 		
 	listener = exynos_camera_capture_listener_register(exynos_camera, exynos_camera->picture_width, exynos_camera->picture_height, format, exynos_camera_picture_callback);
 	if (listener == NULL) {
@@ -3266,10 +3268,6 @@ int exynos_camera_auto_focus(struct exynos_camera *exynos_camera, int auto_focus
 	switch (auto_focus_status) {
 	  case ISX012_AUTO_FOCUS_IN_PROGRESS:
 	  case CAMERA_AF_STATUS_IN_PROGRESS:
-/*
-			if (EXYNOS_CAMERA_MSG_ENABLED(CAMERA_MSG_FOCUS_MOVE) && EXYNOS_CAMERA_CALLBACK_DEFINED(notify) && !exynos_camera->callback_lock)
-				exynos_camera->callbacks.notify(CAMERA_MSG_FOCUS_MOVE, 1, 0, exynos_camera->callbacks.user);
-*/
 			break;
 			
 	  case CAMERA_AF_STATUS_SUCCESS:
@@ -3316,12 +3314,10 @@ void *exynos_camera_auto_focus_thread(void *data)
 			ALOGE("%s: Unable to auto-focus", __func__);
 			     auto_focus_status = CAMERA_AF_STATUS_FAIL;
 		}
-
 		if (auto_focus_status == ISX012_AUTO_FOCUS_IN_PROGRESS || auto_focus_status == CAMERA_AF_STATUS_IN_PROGRESS)
 		        usleep(10000);
 		else
 			auto_focus_completed = 1;
-
 
 		pthread_mutex_unlock(&exynos_camera->auto_focus_mutex);
 
@@ -3910,6 +3906,7 @@ int exynos_camera_close(hw_device_t *device)
 	}
 
 	free(camera_device);
+	real_cam_id = 0;
 
 	return 0;
 }
@@ -3933,6 +3930,7 @@ int exynos_camera_open(const struct hw_module_t* module, const char *camera_id,
 	
 	exynos_camera = calloc(1, sizeof(struct exynos_camera));
 	exynos_camera->config = exynos_camera_config;
+	real_cam_id = id;
 
 	if (exynos_camera->config->v4l2_nodes_count > EXYNOS_CAMERA_MAX_V4L2_NODES_COUNT)
 		goto error_preset;
@@ -3995,6 +3993,11 @@ int exynos_camera_get_camera_info(int id, struct camera_info *info)
 {
 	ALOGD("%s(%d, %p)", __func__, id, info);
 
+	if(real_cam_id == 1 && id == 0) {
+	        ALOGD("%s: ID does not match current camera",__func__);
+		id = real_cam_id;
+	}
+
 	if (id < 0 || info == NULL)
 		return -EINVAL;
 
@@ -4025,7 +4028,7 @@ struct camera_module HAL_MODULE_INFO_SYM = {
 		.module_api_version = CAMERA_MODULE_API_VERSION_1_0,
 		.id = CAMERA_HARDWARE_MODULE_ID,
 		.name = "Exynos Camera",
-		.author = "Paul Kocialkowski",
+		.author = "Paul Kocialkowski, Scott Brissenden",
 		.methods = &exynos_camera_module_methods,
 	},
 	.get_number_of_cameras = exynos_camera_get_number_of_cameras,
