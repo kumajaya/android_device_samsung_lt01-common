@@ -90,9 +90,9 @@ struct exynos_camera_preset exynos_camera_presets_smdk4x12[] = {
 			.recording_format = "yuv420sp",
 
 			.focus_mode = "auto",
-			.focus_mode_values = "auto,macro,fixed",
+			.focus_mode_values = "auto,infinity,macro,fixed,continuous-picture,continuous-video",
 			.focus_distances = "0.15,1.20,Infinity",
-			.focus_areas = NULL,
+			.focus_areas = "(0,0,0,0,0)",
 			.max_num_focus_areas = 1,
 
 			.zoom_supported = 0,
@@ -3267,15 +3267,14 @@ int exynos_camera_auto_focus(struct exynos_camera *exynos_camera, int auto_focus
 
 	switch (auto_focus_status) {
 	  case ISX012_AUTO_FOCUS_IN_PROGRESS:
-	  case CAMERA_AF_STATUS_IN_PROGRESS:
 			break;
 			
-	  case CAMERA_AF_STATUS_SUCCESS:
+	  case ISX012_AUTO_FOCUS_SUCCESS:
 			if (EXYNOS_CAMERA_MSG_ENABLED(CAMERA_MSG_FOCUS) && EXYNOS_CAMERA_CALLBACK_DEFINED(notify) && !exynos_camera->callback_lock)
 				exynos_camera->callbacks.notify(CAMERA_MSG_FOCUS, 1, 0, exynos_camera->callbacks.user);
 			break;
 			
-	  case CAMERA_AF_STATUS_FAIL:
+	  case ISX012_AUTO_FOCUS_FAIL:
 		default:
 			if (EXYNOS_CAMERA_MSG_ENABLED(CAMERA_MSG_FOCUS) && EXYNOS_CAMERA_CALLBACK_DEFINED(notify) && !exynos_camera->callback_lock)
 				exynos_camera->callbacks.notify(CAMERA_MSG_FOCUS, 0, 0, exynos_camera->callbacks.user);
