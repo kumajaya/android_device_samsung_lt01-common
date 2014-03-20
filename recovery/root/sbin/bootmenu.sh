@@ -10,7 +10,7 @@ format_to_ext4() {
 }
 
 format_to_f2fs() {
-  if [ $(blkid ${1} | grep -c "ext4") -eq 1 ]; then
+  if [ $(blkid ${1} | grep -c "f2fs") -lt 1 ]; then
     mkfs.f2fs ${1}
   fi
 }
@@ -63,7 +63,6 @@ fi
 
 if [ "$DEFAULTROM" == "1" ]; then
   if [ "$F2FS" == "1" ]; then
-    mv -f /res/misc/recovery.fstab.f2fs.2 /etc/recovery.fstab
     # Make sure /cache filesystem same as /data filesystem
     format_to_f2fs $HIDDENDEV
   else
@@ -96,7 +95,6 @@ if [ "$DEFAULTROM" == "1" ]; then
   fi
 else
   if [ "$F2FS" == "1" ]; then
-    mv -f /res/misc/recovery.fstab.f2fs /etc/recovery.fstab
     format_to_f2fs $CACHEDEV
   else
     format_to_ext4 $CACHEDEV
