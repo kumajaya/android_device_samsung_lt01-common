@@ -18,8 +18,5 @@
      for different hardware or product builds. -->
 <resources>
     <!-- Samsung Camcorder Mode -->
-    <bool name="needsSamsungCamMode">true</bool>
-
-    <!-- Allows setting video size before recording starts -->
-    <bool name="needsEarlyVideoSize">true</bool>
+    <!-- <bool name="needsSamsungCamMode">true</bool> -->
 </resources>
