@@ -114,6 +114,8 @@ const static char * video_size_values[] = {
     "1280x720,640x480,320x240",
     "640x480,320x240"};
 
+static bool reset_focus = true;
+
 static char * camera_fixup_getparams(int id, const char * settings)
 {
     android::CameraParameters params;
@@ -124,6 +126,9 @@ static char * camera_fixup_getparams(int id, const char * settings)
     // Front camera workaround
     if (id == 1)
         params.remove(android::CameraParameters::KEY_SUPPORTED_VIDEO_SIZES);
+
+    if(params.get("focus-areas") && !strcmp(params.get("focus-areas"), "(0,0,0,0,0)"))
+        reset_focus = true;
 
     if(params.get("cam_mode") && !strcmp(params.get("cam_mode"), "1")) {
         params.set(android::CameraParameters::KEY_SUPPORTED_PREVIEW_SIZES, preview_size_values[id]);
@@ -151,9 +156,11 @@ char * camera_fixup_setparams(int id, const char * settings)
 
     // fix params here
 
-    // CM's camera hack to prevent camera driver crash, device reboot
-    if(params.get("focus-areas") && !strcmp(params.get("focus-areas"), "(-125,-167,125,167,1)"))
+    // Don't set focus-areas when switching camera to prevent camera driver crash
+    if(reset_focus) {
         params.set("focus-areas", "(0,0,0,0,0)");
+        reset_focus = false;
+    }
 
     if(params.get("cam_mode") && !strcmp(params.get("cam_mode"), "1")) {
         const char* previewSize = params.get(android::CameraParameters::KEY_PREVIEW_SIZE);
