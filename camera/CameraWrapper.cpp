@@ -158,7 +158,8 @@ char * camera_fixup_setparams(int id, const char * settings)
 
     // Don't set focus-areas when switching camera to prevent camera driver crash
     if(reset_focus) {
-        params.set("focus-areas", "(0,0,0,0,0)");
+        if(params.get("focus-areas"))
+            params.set("focus-areas", "(0,0,0,0,0)");
         reset_focus = false;
     }
 
@@ -280,6 +281,7 @@ int camera_preview_enabled(struct camera_device * device)
     if(!device)
         return -EINVAL;
 
+    reset_focus = true;
     return VENDOR_CALL(device, preview_enabled);
 }
 
@@ -360,6 +362,7 @@ int camera_cancel_auto_focus(struct camera_device * device)
     if(!device)
         return -EINVAL;
 
+    reset_focus = true;
     return VENDOR_CALL(device, cancel_auto_focus);
 }
 
