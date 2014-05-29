@@ -72,6 +72,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.cm.hardware.cabc=/sys/class/mdnie/mdnie/cabc
     ro.hwui.disable_scissor_opt=true
 
+# Media profiles
+PRODUCT_COPY_FILES += \
+    $(COMMON_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml
+
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/tablet_core_hardware.xml \
