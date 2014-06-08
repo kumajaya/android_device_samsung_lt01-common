@@ -104,10 +104,12 @@ static int check_vendor_module()
  * Video: 640x480(4:3), 320x240(4:3)
  */
 
+#if 0
 // From kernel driver
 const static char * preview_size_values[] = {
     "1280x720,1024x768,1024x576,880x720,640x480,528x432,352x288,320x240,176x144",
     "640x480,352x288,320x240"};
+#endif
 
 // From stock camera app
 const static char * video_size_values[] = {
@@ -131,7 +133,7 @@ static char * camera_fixup_getparams(int id, const char * settings)
         reset_focus = true;
 
     if(params.get("cam_mode") && !strcmp(params.get("cam_mode"), "1")) {
-        params.set(android::CameraParameters::KEY_SUPPORTED_PREVIEW_SIZES, preview_size_values[id]);
+        params.set(android::CameraParameters::KEY_SUPPORTED_PREVIEW_SIZES, video_size_values[id]);
         const char* videoSize = params.get(android::CameraParameters::KEY_VIDEO_SIZE);
         params.set(android::CameraParameters::KEY_PREVIEW_SIZE, videoSize);
     }
