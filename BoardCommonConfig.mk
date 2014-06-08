@@ -44,6 +44,9 @@ BOARD_USE_LEGACY_SENSORS_FUSION := false
 # Button backlight
 BOARD_EXYNOS4X12_TABLET_HAS_LED_BUTTONS := true
 
+# Skip droiddoc build to save build time
+BOARD_SKIP_ANDROID_DOC_BUILD := true
+
 # inherit from the proprietary version
 -include vendor/samsung/lt01-common/BoardConfigVendor.mk
 
