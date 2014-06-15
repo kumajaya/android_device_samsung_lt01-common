@@ -41,9 +41,11 @@ system/lib/libhwconverter.so
 system/lib/libhwjpeg.so
 system/lib/libquramimagecodec.so
 system/lib/libsecnativefeature.so
-system/lib/libtvout_jni.so
-system/lib/libtvoutinterface.so
-system/lib/libtvoutservice.so
+system/lib/libExynosHWCService.so
+system/lib/libSecEDSVendorBase.so
+system/lib/libSecExternalDisplayservice.so
+system/lib/libSecExternalDisplayinterface.so
+system/lib/libSecExternalDisplay_jni.so
 system/media/Disconnected.qmg
 system/media/battery_batteryerror.qmg
 system/media/battery_charging_5.qmg
