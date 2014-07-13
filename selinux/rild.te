@@ -1,8 +1,10 @@
 ## RIL
 allow rild radio_device:chr_file rw_file_perms;
-allow rild { efs_file }:file rw_file_perms;
+allow rild efs_file:file rw_file_perms;
+allow rild efs_block_device:blk_file rw_file_perms;
 allow rild self:netlink_socket { create bind read write };
 allow rild self:netlink_route_socket { write };
+allow rild self:netlink_kobject_uevent_socket { create bind read write setopt };
 
 # Talk to qmuxd
 qmux_socket(rild)
@@ -12,3 +14,4 @@ allow rild diagnostic_device:chr_file rw_file_perms;
 
 # XXX label with own type?
 allow rild sysfs:file { read open write getattr };
+allow rild efs_file:file { read open write setattr };
