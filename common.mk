@@ -70,7 +70,9 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.cm.hardware.cabc=/sys/class/mdnie/mdnie/cabc \
-    ro.hwui.disable_scissor_opt=true
+    ro.hwui.disable_scissor_opt=true \
+    ro.switch_code.sw_lid=0x15 \
+    ro.switch_code.sw_lid_invert=true
 
 # Media profiles
 PRODUCT_COPY_FILES += \

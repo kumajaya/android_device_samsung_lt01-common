@@ -47,6 +47,9 @@ BOARD_EXYNOS4X12_TABLET_HAS_LED_BUTTONS := true
 # Skip droiddoc build to save build time
 BOARD_SKIP_ANDROID_DOC_BUILD := true
 
+# Flip cover sensor
+BOARD_HAS_EXTENDED_SWITCH := true
+
 # inherit from the proprietary version
 -include vendor/samsung/lt01-common/BoardConfigVendor.mk
 
