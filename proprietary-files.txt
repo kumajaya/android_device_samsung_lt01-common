@@ -5,7 +5,6 @@ system/bin/bcm4334_semco.hcd
 system/bin/bintvoutservice
 system/bin/gps.cer
 system/bin/geomagneticd
-system/bin/lpmkey
 system/bin/orientationd
 system/bin/playlpm
 system/cameradata/datapattern_420sp.yuv
