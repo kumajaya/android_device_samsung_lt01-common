@@ -31,6 +31,9 @@ TARGET_USERIMAGES_USE_F2FS := true
 # exFAT kernel support
 KERNEL_EXFAT_MODULE_NAME := "exfat"
 
+# Graphics
+TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := false
+
 # Recovery
 BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun/file"
 BOARD_RECOVERY_SWIPE := true
