@@ -33,6 +33,7 @@ KERNEL_EXFAT_MODULE_NAME := "exfat"
 
 # Graphics
 TARGET_RUNNING_WITHOUT_SYNC_FRAMEWORK := false
+BOARD_USE_SYSFS_VSYNC_NOTIFICATION := false
 
 # Recovery
 BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun/file"
