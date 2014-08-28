@@ -53,7 +53,7 @@ service ueventd /sbin/ueventd
 service console /system/bin/sh
     console
 
-service playlpm /system/bin/playlpm
+service lpm /system/bin/lpm
     user root
 
 # adbd is controlled by the persist.service.adb.enable system property
