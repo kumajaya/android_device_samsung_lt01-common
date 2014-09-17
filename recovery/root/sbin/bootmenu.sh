@@ -1,15 +1,17 @@
 #!/sbin/sh
 
-# Ketut P. Kumajaya, May 2013, Nov 2013, Mar 2014
+# Ketut P. Kumajaya, May 2013, Nov 2013, Mar 2014, Sept 2014
 # Do not remove above credits header!
 
 format_to_ext4() {
+  # Don't reformat ext4 formatted filesystem
   if [ $(blkid ${1} | grep -c "ext4") -lt 1 ]; then
     make_ext4fs -J ${1}
   fi
 }
 
 format_to_f2fs() {
+  # Don't reformat f2fs formatted filesystem
   if [ $(blkid ${1} | grep -c "f2fs") -lt 1 ]; then
     mkfs.f2fs ${1}
   fi
@@ -41,7 +43,7 @@ HIDDENDEV="/dev/block/mmcblk0p16"
 sleep 1
 mkdir /.secondrom
 
-# Mount /data partition as ext4 or f2fs
+# Mount /data partition as ext4 or f2fs, will never be unmounted in 2nd recovery
 if [ $(blkid $DATADEV | grep -c "ext4") -eq 1 ]; then
   busybox mount -t ext4 -o noatime,nodiratime,noauto_da_alloc,barrier=1 $DATADEV /.secondrom
 else
@@ -62,51 +64,61 @@ if [ -f /.secondrom/media/.secondrom/system.img ]; then
 fi
 
 if [ "$DEFAULTROM" == "1" ]; then
+  # Make sure /cache filesystem same as /data filesystem
   if [ "$F2FS" == "1" ]; then
-    # Make sure /cache filesystem same as /data filesystem
     format_to_f2fs $HIDDENDEV
   else
-    mv -f /res/misc/recovery.fstab.2 /etc/recovery.fstab
     format_to_ext4 $HIDDENDEV
   fi
 
+  # 2nd recovery spesific files
+  mv -f /res/misc/recovery.fstab.2 /etc/recovery.fstab
   rm -f /sbin/mount /sbin/umount
   mv -f /res/misc/mount.2 /sbin/mount
   mv -f /res/misc/umount.2 /sbin/umount
   mv -f /res/misc/virtual_keys.2.png /res/images/virtual_keys.png
   chmod 755 /sbin/mount /sbin/umount
 
+  # Associate /dev/block/loop0 with system.img
   losetup /dev/block/loop0 /.secondrom/media/.secondrom/system.img
   # Remove default /system and /cache block device
   rm -f $SYSTEMDEV $CACHEDEV
-  # Symlink /system block device to /dev/block/loop0
+  # Symlink /system block device to /dev/block/loop0 for transparent operation
   ln -s /dev/block/loop0 $SYSTEMDEV
-  # Symlink /cache block device to /preload block device
+  # Symlink /cache block device to /preload block device for transparent operation
   ln -s $HIDDENDEV $CACHEDEV
 
+  # Bind mount /.secondrom/media/.secondrom/data to /data for transparent operation
+  # no real block device and always locked
   mkdir -p /.secondrom/media/.secondrom/data
   busybox mount --bind /.secondrom/media/.secondrom/data /data
   mkdir -p /data/media
   busybox mount --bind /.secondrom/media /data/media
 
+  # Create philz-touch_6.ini if not available and set menu_text_color to blue
   if [ ! -f /data/philz-touch/philz-touch_6.ini ]; then
     mkdir -p /data/philz-touch
     echo "menu_text_color=4" >> /data/philz-touch/philz-touch_6.ini
   fi
 else
+  # Make sure /cache filesystem same as /data filesystem
   if [ "$F2FS" == "1" ]; then
     format_to_f2fs $CACHEDEV
   else
     format_to_ext4 $CACHEDEV
   fi
 
+  # 1st recovery spesific files
   rm -f /sbin/mount /sbin/umount
   mv -f /res/misc/mount /sbin/mount
   mv -f /res/misc/umount /sbin/umount
   chmod 755 /sbin/mount /sbin/umount
 
+  # Create /data/philz-touch directory if not available
   if [ ! -f /.secondrom/philz-touch/philz-touch_6.ini ]; then
     mkdir -p /.secondrom/philz-touch
   fi
+
+  # Unmount /data
   busybox umount -f /.secondrom
 fi
