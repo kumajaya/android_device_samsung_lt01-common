@@ -45,6 +45,7 @@ PRODUCT_COPY_FILES := \
 PRODUCT_COPY_FILES += \
     $(COMMON_PATH)/recovery/root/res/misc/bootmenu.zip:recovery/root/res/misc/bootmenu.zip \
     $(COMMON_PATH)/recovery/root/res/misc/tool.zip:recovery/root/res/misc/tool.zip \
+    $(COMMON_PATH)/recovery/root/res/misc/env.sh:recovery/root/res/misc/env.sh \
     $(COMMON_PATH)/recovery/root/res/misc/mount:recovery/root/res/misc/mount \
     $(COMMON_PATH)/recovery/root/res/misc/mount.2:recovery/root/res/misc/mount.2 \
     $(COMMON_PATH)/recovery/root/res/misc/umount:recovery/root/res/misc/umount \

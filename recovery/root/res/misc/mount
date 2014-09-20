@@ -1,14 +1,7 @@
 #!/sbin/sh
 
-# Galaxy Tab 3 T31x block device
-SYSTEMDEV="/dev/block/platform/dw_mmc/by-name/SYSTEM"
-CACHEDEV="/dev/block/platform/dw_mmc/by-name/CACHE"
-DATADEV="/dev/block/platform/dw_mmc/by-name/USERDATA"
-
-# Galaxy Tab 2 block device
-# SYSTEMDEV="/dev/block/platform/omap/omap_hsmmc.1/by-name/FACTORYFS"
-# CACHEDEV="/dev/block/platform/omap/omap_hsmmc.1/by-name/CACHE"
-# DATADEV="/dev/block/platform/omap/omap_hsmmc.1/by-name/DATAFS"
+# Import dual boot environment setup
+. /res/misc/env.sh
 
 echo $0 $* >> /dev/null
 
