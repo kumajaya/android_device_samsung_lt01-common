@@ -63,7 +63,6 @@ if [ "$DEFAULTROM" == "1" ]; then
   fi
 
   # 2nd recovery spesific files
-  mv -f /res/misc/recovery.fstab.2 /etc/recovery.fstab
   mv -f /res/misc/mount.2 /sbin/mount
   mv -f /res/misc/umount.2 /sbin/umount
   mv -f /res/misc/virtual_keys.2.png /res/images/virtual_keys.png
@@ -110,7 +109,6 @@ else
   mv -f /res/misc/mount /sbin/mount
   mv -f /res/misc/umount /sbin/umount
   # Remove 2nd recovery files
-  rm -f /res/misc/recovery.fstab.2
   rm -f /res/misc/mount.2
   rm -f /res/misc/umount.2
   rm -f /res/misc/virtual_keys.2.png
