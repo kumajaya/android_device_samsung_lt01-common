@@ -38,12 +38,16 @@ BOARD_USE_SYSFS_VSYNC_NOTIFICATION := false
 # Recovery
 BOARD_UMS_LUNFILE := "/sys/class/android_usb/android0/f_mass_storage/lun/file"
 BOARD_RECOVERY_SWIPE := true
+TARGET_RECOVERY_INITRC := device/samsung/lt01-common/recovery/root/init.rc
 
 # Sensors
 BOARD_USE_LEGACY_SENSORS_FUSION := false
 
 # Legacy driver compatibility
 # COMMON_GLOBAL_CFLAGS += -DNEEDS_VECTORIMPL_SYMBOLS
+
+# Disable custom buffer size
+COMMON_GLOBAL_CFLAGS += -DDISABLE_CUSTOM_BUFFER_SIZE
 
 # Button backlight
 BOARD_EXYNOS4X12_TABLET_HAS_LED_BUTTONS := true
